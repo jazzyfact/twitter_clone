@@ -2,16 +2,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css'
+import Head from 'next/head'
 
 
-const App = ({Component}) => {
+const NordBird = ({Component}) => {
     return (
+        <>
+        <Head>
+            <meta charSet="uft-8"></meta>
+            <title>NordBrid</title>
+        </Head>
         <Component />
+        </>
     )
 };
 
-App.PropTypes = {
+NordBird.PropTypes = {
     Component : PropTypes.elementType.isRequired,
 }
 
-export default App;
+export default NordBird;
