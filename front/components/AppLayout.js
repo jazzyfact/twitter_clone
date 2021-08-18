@@ -20,15 +20,20 @@ const AppLayout = ({children}) => {
       <Link href="/signup"><a>회원가입</a></Link>
             </Menu.Item>
       </Menu>
-      <Row>
+      {/* 컬럼 사이에 간격 */}
+      <Row gutter={8}>
+          {/* 24칸중에 6칸 차지 25% */}
         <Col  xs= {24} md={6}>
             왼쪽 메뉴
         </Col> 
+        {/* 50% */}
         <Col  xs= {24} md={12}>
         {children}
         </Col>
+          {/* 24칸중에 6칸 차지 25% */}
         <Col  xs= {24} md={6}>
             오른쪽 메뉴
+            <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">hyemi</a>
         </Col>
         
       </Row>
