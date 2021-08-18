@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { Col, Input, Menu, Row } from 'antd';
+import UserProfile from '../components/UserProfile';
+import LoginForm  from '../components/LoginForm';
+
 
 const AppLayout = ({children}) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
     <div>
         <Menu mode ="horizontal">
@@ -24,7 +28,8 @@ const AppLayout = ({children}) => {
       <Row gutter={8}>
           {/* 24칸중에 6칸 차지 25% */}
         <Col  xs= {24} md={6}>
-            왼쪽 메뉴
+            {/* 로그인 되어 있으면 사용자 프로필보여주고, 로그인 안되어있으면 로그인 폼을 보여줌 */}
+           {isLoggedIn ? <UserProfile /> : <LoginForm/>}
         </Col> 
         {/* 50% */}
         <Col  xs= {24} md={12}>
@@ -32,7 +37,7 @@ const AppLayout = ({children}) => {
         </Col>
           {/* 24칸중에 6칸 차지 25% */}
         <Col  xs= {24} md={6}>
-            오른쪽 메뉴
+            
             <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">hyemi</a>
         </Col>
         
