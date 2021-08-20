@@ -1,7 +1,13 @@
 import React,{useState, useCallback} from 'react';
 import {Form, Input, Button} from 'antd';
 import Link  from 'next/link';
+import styled from 'styled-components';
 
+
+
+// styled이 적용된, styled 태그를 불러옴
+const ButtonWrapper = styled.div`
+    margin-Top: 10px` ;
 
 const LoginForm = () => {
 
@@ -40,10 +46,11 @@ const LoginForm = () => {
                 onChange={onChangePassword} 
                 required />
             </div>
-            <div>
-                <Button type="primary" htmlType="submit" loding={false} required/>
+            <ButtonWrapper >
+                {/* style은 객체로 넣으면 안된다 */}
+                <Button type="primary" htmlType="submit" loading={false}>로그인 </Button>
                 <Link href="/signup"><a><Button>회원가입</Button></a></Link>
-            </div>
+            </ButtonWrapper>
         </Form>
     );
 }

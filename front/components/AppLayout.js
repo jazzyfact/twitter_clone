@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 import { Col, Input, Menu, Row } from 'antd';
 import UserProfile from '../components/UserProfile';
 import LoginForm  from '../components/LoginForm';
+import styled from 'styled-components';
+
+
+const SearchInput = styled(Input.Search)`
+    verticalAlign: 'middle';
+`;
 
 
 const AppLayout = ({children}) => {
@@ -18,7 +24,7 @@ const AppLayout = ({children}) => {
                 <Link href="/profile"><a>프로필</a></Link>
             </Menu.Item>
             <Menu.Item>
-                <Input.Search enterButton style={{verticalAlign: 'middle'}}/>
+                <SearchInput enterButton/>
             </Menu.Item>
             <Menu.Item>
       <Link href="/signup"><a>회원가입</a></Link>
