@@ -1,4 +1,4 @@
-import React,{useState, useCallback} from 'react';
+import React,{useState, useCallback, useMemo} from 'react';
 import {Form, Input, Button} from 'antd';
 import Link  from 'next/link';
 import styled from 'styled-components';
@@ -9,7 +9,7 @@ import styled from 'styled-components';
 const ButtonWrapper = styled.div`
     margin-Top: 10px` ;
 
-const LoginForm = () => {
+const LoginForm = ({setIsLoggedIn}) => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
@@ -25,8 +25,19 @@ const LoginForm = () => {
         setPassword(e.target.value);
     }, []);
 
+
+    const style = useMemo(() => ({
+        marginTop:  10
+    }), []);
+
+    const onSubmitForm = useCallback(()  => {
+        console.log(id, password);
+        setIsLoggedIn(true);
+    }, [id, password]); 
+
+    
     return (
-        <Form>
+        <Form onFinish={onSubmitForm}>
             <div>
                 <label htmlFor ="user-id">아이디</label>
                 <br/>
@@ -46,7 +57,7 @@ const LoginForm = () => {
                 onChange={onChangePassword} 
                 required />
             </div>
-            <ButtonWrapper >
+            <ButtonWrapper style ={style}>
                 {/* style은 객체로 넣으면 안된다 */}
                 <Button type="primary" htmlType="submit" loading={false}>로그인 </Button>
                 <Link href="/signup"><a><Button>회원가입</Button></a></Link>

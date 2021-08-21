@@ -35,7 +35,7 @@ const AppLayout = ({children}) => {
           {/* 24칸중에 6칸 차지 25% */}
         <Col  xs= {24} md={6}>
             {/* 로그인 되어 있으면 사용자 프로필보여주고, 로그인 안되어있으면 로그인 폼을 보여줌 */}
-           {isLoggedIn ? <UserProfile /> : <LoginForm/>}
+           {isLoggedIn ? <UserProfile /> : <LoginForm setIsLoggedIn={setIsLoggedIn} />}
         </Col> 
         {/* 50% */}
         <Col  xs= {24} md={12}>
