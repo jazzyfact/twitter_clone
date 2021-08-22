@@ -30,6 +30,11 @@ const LoginForm = ({setIsLoggedIn}) => {
         marginTop:  10
     }), []);
 
+    const FormWrapper = styled(Form)`
+        padding:10px
+    `;
+
+
     const onSubmitForm = useCallback(()  => {
         console.log(id, password);
         setIsLoggedIn(true);
@@ -37,7 +42,7 @@ const LoginForm = ({setIsLoggedIn}) => {
 
     
     return (
-        <Form onFinish={onSubmitForm}>
+        <FormWrapper onFinish={onSubmitForm}>
             <div>
                 <label htmlFor ="user-id">아이디</label>
                 <br/>
@@ -62,7 +67,7 @@ const LoginForm = ({setIsLoggedIn}) => {
                 <Button type="primary" htmlType="submit" loading={false}>로그인 </Button>
                 <Link href="/signup"><a><Button>회원가입</Button></a></Link>
             </ButtonWrapper>
-        </Form>
+        </FormWrapper>
     );
 }
 
