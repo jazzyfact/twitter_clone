@@ -1,8 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
+import NicknameEditForm from '../components/NicknameEditForm';
+import FollowList from '../components/FollowList';
 
 const Profile = () => {
+
+    const followerList = [{nickname : 'heymi'}, {nickname : '빈지노'}, {nickname : '이센스'}];
+    const followingList = [{nickname : 'heymi'}, {nickname : '빈지노'}, {nickname : '이센스'}]
     return (
         <>
          <Head>
@@ -12,7 +17,7 @@ const Profile = () => {
         <AppLayout>
             <NicknameEditForm/>
             <FollowList header="팔로잉 목록" data={followingList}/>
-            <FolloList header="팔로워 목록" data={followerList}/>
+            <FollowList header="팔로워 목록" data={followerList}/>
         </AppLayout>
         </>
     );
