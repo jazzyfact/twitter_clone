@@ -7,6 +7,7 @@ import LoginForm  from '../components/LoginForm';
 import styled from 'styled-components';
 
 
+
 const SearchInput = styled(Input.Search)`
     verticalAlign: 'middle';
 `;
@@ -54,6 +55,6 @@ const AppLayout = ({children}) => {
 
 AppLayout.propTypes = {
     children: PropTypes.node.isRequired,
-}
+  }
   
 export default AppLayout;
