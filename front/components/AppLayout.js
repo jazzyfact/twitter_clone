@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
-import Link from 'next/link';
+import React from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import { Col, Input, Menu, Row } from 'antd';
+
+
+import { useSelector } from 'react-redux';
+
 import UserProfile from '../components/UserProfile';
 import LoginForm  from '../components/LoginForm';
+
+
 import styled from 'styled-components';
 
 
@@ -14,7 +20,8 @@ const SearchInput = styled(Input.Search)`
 
 
 const AppLayout = ({children}) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
     return (
     <div>
         <Menu mode ="horizontal">
@@ -36,7 +43,7 @@ const AppLayout = ({children}) => {
           {/* 24칸중에 6칸 차지 25% */}
         <Col  xs= {24} md={6}>
             {/* 로그인 되어 있으면 사용자 프로필보여주고, 로그인 안되어있으면 로그인 폼을 보여줌 */}
-           {isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : <LoginForm setIsLoggedIn={setIsLoggedIn} />}
+            {isLoggedIn? <UserProfile />: <LoginForm />}
         </Col> 
         {/* 50% */}
         <Col  xs= {24} md={12}>

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "next -p 3060",
     "build": "build next"
   },
   "author": "heymi",
@@ -17,8 +17,11 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
     "redux": "^4.1.1",
-    "styled-components": "^5.3.0"
+    "redux-devtools-extension": "^2.13.9",
+    "styled-components": "^5.3.0",
+    "update": "^0.7.4"
   },
   "devDependencies": {
     "eslint": "^7.31.0",
