@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 
 import useInput from '../hooks/useInput';
-import {loginAction} from '../reudcers';
+import {loginAction} from '../reudcers/user';
 
 
 

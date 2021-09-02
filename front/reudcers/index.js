@@ -1,60 +1,27 @@
 import { HYDRATE} from 'next-redux-wrapper';
+import { combineReducers } from 'redux';
 
-const initialState ={
-  user: {
-      isLoggedIn : false,
-      user : null,
-      signUpData :{},
-      loginData : {},
-  },
-  post : {
-      mainPosts : [],
-  }
-};
-
-export const loginAction = (data) => {
-    return {
-        type: 'LOG_IN',
-        data,
-    }
-}
-
-export const logoutAction = (data) => {
-    return {
-        type: 'LOG_OUT',
-    }
-}
-
+import user from './user';
+import post from './post'
 
 
 
 //(이전상태, 액션) => 다음상태
-const rootReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case HYDRATE :
-            console.log('HYDRATE', action);
-            return { ...state, ...action.payload};
-        case 'LOG_IN' :
-            return {
-                ...state,
-                user : {
-                    ...state.user, //참조관계 유지, 안바꾸고싶은것
-                    isLoggedIn : true,  //내가바꾸고싶은것
-                    user : action.data,
-                }       
-            };
-        case 'LOG_OUT' :
-            return {
-                ...state,
-                user : {
-                    ...state.user, //참조관계 유지, 안바꾸고싶은것
-                    isLoggedIn : false,  //내가바꾸고싶은것
-                    user :null,
-                },       
-            };   
-        default :
-            return state;
-     }
-};
+//user, post를 combineReducers를 이용해 합쳐 줌
+const rootReducer = combineReducers({
+    //하이드레이트를 위해서 reducer를 추가, 서버사이드렌더링을 위해서 index 들어감
+    index : (state = {}, action ) => {
+        switch(action.type) {
+            case HYDRATE :
+                console.log('HYDRATE', action);
+                return { ...state, ...action.payload};
+            default :
+                return state;
+         }
+    },
+    user,
+    post,
+    
+});
 
 export default rootReducer;
