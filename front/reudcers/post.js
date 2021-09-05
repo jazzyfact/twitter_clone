@@ -7,11 +7,13 @@ export const initialState = {
             nickname : 'hyemi',
         },
         content : '첫 번째 게시글 #해시태그 #익스프레스',
-        Images : [{
-            src : './images/sea.jpg',
-            src : './images/sunset.jpg',
-            src : './images/mountains.jpg',
-        }],
+        Images: [{
+            src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
+          }, {
+            src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
+          }, {
+            src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
+          }],
         Comments : [{
             User : {
                 nickname : 'beenzino'
@@ -37,6 +39,7 @@ export const addPost = {
 
 const dummyPost = {
     id : 1,
+    content: '더미데이터입니다.',
     User : {
         id :1,
         nickname : 'hyemi',
@@ -48,12 +51,13 @@ const dummyPost = {
 //이전 state와 action을 받아서 다음 state를 돌려주는 함수
 const reducer = (state = initialState, action) => {
     switch (action.type){
-        case ADD_POST :
+        case ADD_POST : {
             return {
                 ...state,
                 mainPosts : [dummyPost, ...state.mainPosts], //앞에 써야 맨 위로 올라감
                 postAdded: true,
             };
+        }
         default :
             return state;
     }
