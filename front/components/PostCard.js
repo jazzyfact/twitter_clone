@@ -1,9 +1,10 @@
 import React, {useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { Button, Card, Popover,  Avatar } from 'antd';
+import { Button, Card, Popover,  Avatar, List , Comment} from 'antd';
 import { RetweetOutlined, HeartOutlined, MessageOutlined, EllipsisOutlined, HeartTwoTone } from '@ant-design/icons';
 import PostImages from './PostImages';
+import CommentForm from './CommentForm';
 
 
 
@@ -15,6 +16,8 @@ const PostCard = ( {post }) => {
 
 
     const onToggleLike = useCallback(() => {
+        //이전 데이터 기반으로 다음 데이터를 만듦
+        //true -> false, false -> true
         setLiked((prev) => !prev);
            },[]);
     const onToggleComment = useCallback(() => {
@@ -61,11 +64,25 @@ const PostCard = ( {post }) => {
             </Card>
             {commentFormOpened && (
                 <div>
-                    댓글 부분
+                    {/* 어떤 게시글에 댓글을 달 건지 알아야해서 post 보냄, 게시글의 id */}
+                   <CommentForm post={post} />
+                   <List
+                    header={`${post.Comments.length}개의 댓글`}
+                    itemLayout="horizontal"
+                    dataSource={post.Comments}
+                    renderItem={(item) => (
+                        <li>
+                            <Comment
+                                author = {item.User.nickname}//댓글 작성한 유저
+                                avatar = {<Avatar>{item.User.nickname[0]}</Avatar>}
+                                content = {item.content}
+                            />
+                        </li>
+                    )}
+                   
+                   />
                 </div>
             )}
-             {/* <CommentForm/>
-             <Comments /> */}
         </div>
     );
 };
