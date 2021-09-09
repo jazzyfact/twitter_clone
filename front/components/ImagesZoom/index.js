@@ -1,16 +1,82 @@
-import React from 'react';
-import PropTyeps from 'prop-types';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Slick from 'react-slick';
+import styled from 'styled-components';
+
+const Overlay = styled.div`
+    postion : fixed;
+    z-index :5000;
+    top :0;
+    left : 0;
+    right : 0;
+    botton : 0;
+    `;
+
+
+const Header = styled.header`
+    header : 44px;
+    background : white;
+    position : relative;
+    padding : 0;
+    text-align : center';
+
+    & h1 {
+        margin : 0;
+        font-size : 17px;
+        color : #333;
+        line-height :44px;
+    }
+
+    & buttn {
+        position : absolute;
+        right : 0;
+        top : 0;
+        padding : 15px;
+        line-height : 14px;
+        cursor : pointer;
+    }
+`;
+
+const SlickWrapper = styled.div `
+    height : calc(100% - 44px);
+    background : #090909;
+`;
+
+const ImgWrapper = styled.div `
+    padding : 32px;
+    text-align : center;
+
+    &img {
+        margin : 0 auto;
+        max-height : 750;
+    }
+`;
+
+const Indicator = styled.div `
+    text-align : center;
+    
+    & > div {
+        width : 75px;
+        height : 30px;
+        line-height : 30px;
+        border-radius:15px;
+        background : #313131;
+        text-align : center;
+        color : white;
+        font-size : 15px;
+    }
+`;
+
 
 const ImagesZoom = ( {images, onClose }) => {
     const [currentSlide, setCurrentSlide] = useState(0); //현재 페이지를 state에 저장
     return (
-        <div>
-            <header>
+        <Overlay>
+            <Header>
                 <h1>상세 이미지</h1>
                 <button onClick={onClose}> X </button>
-            </header>
-            <div>
+            </Header>
+            <slickWrapper>
                 <Slick 
                     initialSlide={0} //이미지를 0번째 부터 시작
                     afterChange={(slide) => setCurrentsSlide(slide)} //현재슬라이드
@@ -20,21 +86,21 @@ const ImagesZoom = ( {images, onClose }) => {
                     slidesToScroll={1}
                 >
                     {images.map((v) => (
-                        <div key ={x.src}>
+                        <ImgWrapper key ={v.src}>
                             <img src={v.src} alt={v.src}/>
-                        </div>
+                        </ImgWrapper>
                     ))}
                 </Slick>
-            </div>
-        </div>
+            </slickWrapper>
+        </Overlay>
             
     );
 }
 
 
 ImagesZoom.propTypes ={
-    images: propTypes.arrayOf(propTypes.object).isRequired,
-    onClose : PorpTypes.func.isRequired,
+    images: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onClose : PropTypes.func.isRequired,
 };
 
 export default ImagesZoom;
