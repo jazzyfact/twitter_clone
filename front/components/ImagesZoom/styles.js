@@ -35,16 +35,17 @@ export const Header = styled.header`
     color: #333;
     line-height: 44px;
   }
-
-  &button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 15px;
-    line-height: 14px;
-    cursor: pointer;
-  }
 `;
+
+export const CloseBtn = styled(CloseOutlined)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 15px;
+  line-height: 14px;
+  cursor: pointer;
+`;
+
 
 export const SlickWrapper = styled.div`
   height: calc(100% - 44px);
@@ -77,5 +78,3 @@ export const Indicator = styled.div`
     font-size: 15px;
   }
 `;
-
-
