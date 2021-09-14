@@ -1,9 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Slick from 'react-slick';
-import styled from 'styled-components';
+// import { Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator, Global } from 'styled-components';
+import { CloseOutlined } from '@ant-design/icons';
+import styled, { createGlobalStyle } from 'styled-components';
+// import { CloseOutlined } from '@ant-design/icons';
 
-export const Overlay = styled.div`
+
+// slick 덮어쓰기
+const Global = createGlobalStyle`
+  .slick-slide {
+    display: inline-block;
+  }
+  .ant-card-cover {
+      transform : none !important;
+  }
+`;
+
+const Overlay = styled.div`
   position: fixed;
   z-index: 5000;
   top: 0;
@@ -12,7 +26,7 @@ export const Overlay = styled.div`
   bottom: 0;
 `;
 
-export const Header = styled.header`
+const Header = styled.header`
   height: 44px;
   background: white;
   position: relative;
@@ -25,24 +39,25 @@ export const Header = styled.header`
     color: #333;
     line-height: 44px;
   }
-
-  &button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 15px;
-    line-height: 14px;
-    cursor: pointer;
-  }
 `;
 
-export const SlickWrapper = styled.div`
+const CloseBtn = styled(CloseOutlined)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 15px;
+  line-height: 14px;
+  cursor: pointer;
+`;
+
+
+const SlickWrapper = styled.div`
   height: calc(100% - 44px);
   background: #090909;
 `;
 
 
-export const ImgWrapper = styled.div`
+const ImgWrapper = styled.div`
   padding: 32px;
   text-align: center;
   
@@ -52,7 +67,7 @@ export const ImgWrapper = styled.div`
   }
 `;
 
-export const Indicator = styled.div`
+const Indicator = styled.div`
   text-align: center;
   
   & > div {
@@ -70,19 +85,24 @@ export const Indicator = styled.div`
 
 
 
+
+
+
 const ImagesZoom = ( {images, onClose }) => {
     const [currentSlide, setCurrentSlide] = useState(0); //현재 페이지를 state에 저장
+
     return (
         <Overlay>
+          <Global/>
             <Header>
                 <h1>상세 이미지</h1>
-                <button onClick={onClose}> X </button>
+                <CloseBtn  onClick={onClose}> X </CloseBtn>
             </Header>
             <SlickWrapper>
                 <div>
                     <Slick 
                         initialSlide={0} //이미지를 0번째 부터 시작
-                        afterChange={(slide) => setCurrentsSlide(slide)} //현재슬라이드
+                        afterChange={(slide) => setCurrentSlide(slide)} //현재슬라이드
                         infinite
                         arrows={false}
                         slidesToShow={1} //한번에 1개만 보이고, 1개만 넘긴다
@@ -94,6 +114,15 @@ const ImagesZoom = ( {images, onClose }) => {
                             </ImgWrapper>
                         ))}
                     </Slick>
+                    <Indicator>
+                      {/* 현재 몇번째 슬라이더를 보고 있는지 */}
+                      <div>
+                        {currentSlide + 1}
+                        {' '}
+                        /
+                        {images.length}
+                      </div>
+                    </Indicator>
                 </div>
             </SlickWrapper>
         </Overlay>
