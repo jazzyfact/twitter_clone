@@ -6,7 +6,7 @@ import {logoutRequestAction} from '../reducers/user';
 
 const UserProfile = () => {
     const dispatch = useDispatch();
-    const { me, isLoggingOut } = useSelector((state) => state.user);
+    const { me, logOutLoading } = useSelector((state) => state.user);
 
 
 
@@ -18,9 +18,9 @@ const UserProfile = () => {
         <Card
             actions={[
                 // react에서 배열 쓰려면 key 써야함
-                <div key ="twit"> 짹짹 <br/>0</div>,
-                <div key ="followings"> 팔로잉 <br/>0</div>,
-                <div key ="followings"> 팔로워 <br/>0</div>,
+                <div key ="twit"> 짹짹 <br/>{me.Posts.length}</div>,
+                <div key ="followings"> 팔로잉 <br/>{me.Followings.length}</div>,
+                <div key ="followings"> 팔로워 <br/>{me.Followers.length}</div>,
             ]}
             >
 
