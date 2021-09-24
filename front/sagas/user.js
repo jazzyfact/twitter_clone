@@ -10,6 +10,7 @@ function* logIn(action){
         yield delay(1000);
         yield put({
             type: 'LOG_IN_SUCCESS',
+            data : action.data,
             });
         } catch(err) {
             yield put({//dispatch
@@ -41,14 +42,12 @@ function* logOut(){
 
 
 function* watchLogin() {
-    yield tatkLatest('LOG_IN_REQUEST', logIn);//로그인 action이 될 때 까지 기다림
+    yield takeLatest('LOG_IN_REQUEST', logIn);//로그인 action이 될 때 까지 기다림
 }
 
 function* watchLogOut() {
-    yield tatkLatest('LOG_OUT_REQUEST',logOut);
+    yield takeLatest('LOG_OUT_REQUEST',logOut);
 }
-
-
 
 
 export default function* userSaga(){

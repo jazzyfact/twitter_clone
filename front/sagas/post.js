@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { delay, put, takeLatest, all, fork } from 'redux-sata/effects';
+import { delay, put, takeLatest, all, fork } from 'redux-saga/effects';
 
 
 //게시글 추가
@@ -25,7 +25,7 @@ function* addPost(action){
 
 
 function* watchAddPost(){
-    yield tatkLatest('ADD_POST_REQUEST',addPost);
+    yield takeLatest('ADD_POST_REQUEST',addPost);
 }
 
 

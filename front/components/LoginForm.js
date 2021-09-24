@@ -2,11 +2,17 @@ import React,{useCallback} from 'react';
 import {Form, Input, Button} from 'antd';
 import Link  from 'next/link';
 import styled from 'styled-components';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import useInput from '../hooks/useInput';
-import {loginAction} from '../reudcers/user';
+import {loginRequestAction} from '../reducers/user';
 
+// const ButtonWrapper = styled.div`
+//   margin-top :10px;
+// `;
+// const FormWrapper = styled(Form)`
+//   padding : 10px
+// `;
 
 
 // styled이 적용된, styled 태그를 불러옴
@@ -17,14 +23,15 @@ const FormWrapper = styled.div`
     margin-Top: 10px` ; 
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
+    const { isLoggingIn } = useSelector((state) => state.user);
     const [id, onChangeId] = useInput('');
     const [password, onChangePassword] = useInput('');
-    const dispatch = useDispatch();
+  
 
     const onSubmitForm = useCallback(() => {
-        dispatch(loginAction({
-          id,
-          password,
+        console.log(id, password);
+        dispatch(loginRequestAction({ id, password,
         }));
       }, [id, password]);
     
@@ -44,7 +51,7 @@ const LoginForm = () => {
             <Input name="user-password" value={password} onChange={onChangePassword} type="password" required />
           </div>
           <div style={{ marginTop: '10px' }}>
-            <Button type="primary" htmlType="submit" loading={false}>로그인</Button>
+            <Button type="primary" htmlType="submit" loading={isLoggingIn}>로그인</Button>
             <Link href="/signup"><a><Button>회원가입</Button></a></Link>
           </div>
         </Form>
