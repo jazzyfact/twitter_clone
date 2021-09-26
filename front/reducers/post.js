@@ -1,5 +1,6 @@
-import shortId from 'shortId';
+import shortId from 'shortid';
 import produce from 'immer';
+import faker from 'faker';
 
 
 //더미데이터 넣어두기
@@ -52,6 +53,32 @@ export const initialState = {
     addCommentDone : false,
     addCommentError : null,
 }
+
+//faker 더미데이터
+initialState.mainPosts = initialState.mainPosts.concat(
+    Array(20).fill().map(() => ({
+        id : shortId.generate(),
+        User : {
+            id: shortId.generate(),
+            nickname : faker.name.findName(),
+        },
+        content : faker.lorem.paragraph(),
+        Image : [{
+            src : faker.image.imageUrl(),
+        }],
+        Comments : [{
+            User : {
+                id: shortId.generate(),
+                nickname : faker.name.findName()
+            },
+            content : faker.lorem.sentence(),
+        }],
+    })),
+);
+
+
+
+
 
 //action 이름을 상수로 빼준 이유
 //1.오타 방지,
