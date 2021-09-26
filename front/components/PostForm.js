@@ -1,4 +1,4 @@
-import React,{ useCallback,  useRef} from 'react'
+import React,{ useCallback,  useRef, useEffect, useState} from 'react'
 import { Form, Input, Button } from 'antd'
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,17 +8,18 @@ import useInput from '../hooks/useInput';
 
 
 const PostForm = () =>{
-    const {imagePaths } = useSelector((state) => state.post);
     const dispatch = useDispatch();
-  
     const [text, onChangeText , setText] = useInput('');
-
+    const { imagePaths, addPostLoading, addPostDone } = useSelector((state) => state.post);
+ 
+  
+  
     //메세지 보내고 초기화
     useEffect(() => {
-       if(addPostDone){
-        setText('');
-       }
-    }, [addPostDone]);
+        if (addPostDone) {
+          setText('');
+        }
+      }, [addPostDone]);
 
  
     const onSubmit = useCallback(() => {

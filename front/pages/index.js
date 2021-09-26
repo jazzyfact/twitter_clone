@@ -1,4 +1,4 @@
-import React from 'react';
+import React  from 'react';
 import { useSelector } from 'react-redux';
 
 
@@ -7,11 +7,11 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 
 const Home = () => {
-    const { isLoggedIn } = useSelector((state) => state.user);
+    const { me } = useSelector((state) => state.user);
     const { mainPosts } = useSelector((state) => state.post);
     return (
         <AppLayout>
-            {isLoggedIn && <PostForm/>}
+            {me && <PostForm/>}
             {/* key는 index 하면 안됨
             안티패텬(피해야하는 것)
             게시글이 지워질 가능성이 있는 경우에는 index 사용하면 안됨,
@@ -20,5 +20,6 @@ const Home = () => {
             {mainPosts.map((post) => <PostCard key={post.id} post={post}/> )}
         </AppLayout>
     );
-}
+};
+
 export default Home;

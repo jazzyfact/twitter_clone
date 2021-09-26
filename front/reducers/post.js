@@ -1,3 +1,6 @@
+import shortId from 'shortId';
+
+
 //더미데이터 넣어두기
 export const initialState = {
     mainPosts : [{
@@ -8,23 +11,30 @@ export const initialState = {
         },
         content : '첫 번째 게시글 #해시태그 #익스프레스',
         Images: [{
+            id : shortId.generate(),
             src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
           }
           , 
           {
+            id : shortId.generate(),
             src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
           }, 
           {
+            id : shortId.generate(),
             src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
           }
         ],
         Comments : [{
+            id : shortId.generate(),
             User : {
+                id : shortId.generate(),
                 nickname : 'beenzino'
             },
             content : '노래 많이 들어주세요',
         }, {
+            id : shortId.generate(),
             User : {
+                id : shortId.generate(),
                 nickname :'esens',
             },
             content :'노래많이들어주세요~'
@@ -34,6 +44,9 @@ export const initialState = {
     addPostLoading : false, //게시물 추가가 완료 됐을 때
     addPostDone : false,
     addPostError : null,
+    addCommentLoading : false, //댓글 추가가 완료 됐을 때
+    addCommentDone : false,
+    addCommentError : null,
 }
 
 //action 이름을 상수로 빼준 이유
@@ -57,16 +70,28 @@ export const addComment = (data) => ({
     data,
 });
 
-const dummyPost = {
-    id : 1,
-    content: '더미데이터입니다.',
-    User : {
-        id :1,
-        nickname : 'hyemi',
-    },
-    Images : [],
-    Comments :[],
-}
+const dummyPost = (data) => (
+    {
+        id : shortId.generate(),
+        content: data,
+        User : {
+            id :1,
+            nickname : 'hyemi',
+        },
+        Images : [],
+        Comments :[],
+    }
+);
+
+const dummyComment = (data) => (
+    {
+        id : shortId.generate(),
+        content: data,
+        User : {
+            id :1,
+            nickname : 'hyemi',
+        },
+    }); 
 
 //이전 state와 action을 받아서 다음 state를 돌려주는 함수
 const reducer = (state = initialState, action) => {
@@ -77,12 +102,12 @@ const reducer = (state = initialState, action) => {
                 addPostLoading : true,
                 addPostDone : false,
                 addPostError : null,
-            }
+            };
 
         case ADD_POST_SUCCESS : {
             return {
                 ...state,
-                mainPosts : [dummyPost, ...state.mainPosts], //앞에 써야 맨 위로 올라감
+                mainPosts : [dummyPost(action.data), ...state.mainPosts], //앞에 써야 맨 위로 올라감
                 addPostLoading: true,
                 addPostDone : true,
             };
@@ -92,7 +117,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 addPostLoading : true,
                 addPostError : action.error,
-            }
+            };
 
         case ADD_COMMENT_REQUEST : 
             return {
@@ -100,12 +125,19 @@ const reducer = (state = initialState, action) => {
                 addCommentLoading : true,
                 addCommentDone : false,
                 addCommentError : null,
-            }
+            };
 
         case ADD_COMMENT_SUCCESS : {
+            // action.data.content, postId, userId
+            const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+            const post = state.mainPosts[postIndex];
+            post.Comments = [dummyComment(action.data.content), ...post.Comments];
+            const mainPosts = [...state.mainPosts];
+            mainPosts[postIndex] = post;
             return {
                 ...state,
-                addCommentLoading: true,
+                mainPosts,
+                addCommentLoading: false,
                 addCommentDone : true,
             };
         }
