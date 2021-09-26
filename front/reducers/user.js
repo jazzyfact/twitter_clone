@@ -164,9 +164,18 @@ const reducer = (state = initialState, action) => {
             return{
                 ...state,
                 me : {
+                    ...state.me,
                     Posts : [{ id : action.data}, ...state.me.Posts]//글 작성시 게시글 아이디가 들어와서 하나 추가 됨
-                }
-            }
+                },
+            };
+        case REMOVE_POST_OF_ME :
+            return {
+                ...state,
+                me : {
+                    ...state.me,
+                    Posts : state.me.Posts.filter((v) => v.id !== action.data),
+                },
+            };
         default :
             return state;
     }

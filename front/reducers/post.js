@@ -44,6 +44,9 @@ export const initialState = {
     addPostLoading : false, //게시물 추가가 완료 됐을 때
     addPostDone : false,
     addPostError : null,
+    removePostLoading : false, //게시물 추가가 완료 됐을 때
+    removePostDone : false,
+    removePostError : null,
     addCommentLoading : false, //댓글 추가가 완료 됐을 때
     addCommentDone : false,
     addCommentError : null,
@@ -54,6 +57,10 @@ export const initialState = {
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
@@ -70,21 +77,18 @@ export const addComment = (data) => ({
     data,
 });
 
-const dummyPost = (data) => (
-    {
-        id : shortId.generate(),
-        content: data,
+const dummyPost = (data) => ({
+        id : data.id,
+        content: data.content,
         User : {
             id :1,
             nickname : 'hyemi',
         },
         Images : [],
         Comments :[],
-    }
-);
+    });
 
-const dummyComment = (data) => (
-    {
+const dummyComment = (data) => ({
         id : shortId.generate(),
         content: data,
         User : {
@@ -108,15 +112,37 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 mainPosts : [dummyPost(action.data), ...state.mainPosts], //앞에 써야 맨 위로 올라감
-                addPostLoading: true,
+                addPostLoading: false,
                 addPostDone : true,
             };
         }
         case ADD_POST_FAILURE : 
             return {
                 ...state,
-                addPostLoading : true,
+                addPostLoading : false,
                 addPostError : action.error,
+            };
+        case REMOVE_POST_REQUEST : 
+            return {
+                ...state,
+                removePostLoading : true,
+                removePostDone : false,
+                removePostError : null,
+            };
+
+        case REMOVE_POST_SUCCESS : {
+            return {
+                ...state,
+                mainPosts : state.mainPosts.filter((v) => v.id !== action.data),
+                removePostLoading: false,
+                removePostDone : true,
+            };
+        }
+        case REMOVE_POST_FAILURE : 
+            return {
+                ...state,
+                removePostLoading : false,
+                removePostError : action.error,
             };
 
         case ADD_COMMENT_REQUEST : 
@@ -144,7 +170,7 @@ const reducer = (state = initialState, action) => {
         case ADD_COMMENT_FAILURE : 
             return {
                 ...state,
-                addCommentLoading : true,
+                addCommentLoading : false,
                 addCommentError : action.error,
             }
         default :
