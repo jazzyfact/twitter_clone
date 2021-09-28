@@ -1,25 +1,25 @@
-//공통되는 것들을 묶어놈
 import React from 'react';
+import Head from 'next/head';
 import PropTypes from 'prop-types';
-import 'antd/dist/antd.css'
-import Head from 'next/head'
+import 'antd/dist/antd.css';
 
 import wrapper from '../store/configureStore';
 
-const NordBird = ({Component}) => {
-    return (
-        <>
-        <Head>
-            <meta charSet="uft-8"></meta>
-            <title>NordBrid</title>
-        </Head>
-        <Component />
-        </>
-    )
+const NodeBird = ({ Component }) => (
+  <>
+    <Head>
+      <title>NodeBird</title>
+    </Head>
+    <Component />
+  </>
+);
+
+NodeBird.propTypes = {
+  Component: PropTypes.elementType.isRequired,
 };
 
-NordBird.PropTypes = {
-    Component : PropTypes.elementType.isRequired,
+export function reportWebVitals(metric) {
+  console.log(metric);
 }
 
-export default wrapper.withRedux(NordBird);
+export default wrapper.withRedux(NodeBird);

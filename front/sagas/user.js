@@ -2,12 +2,21 @@ import { all, delay, fork, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 import {
-  LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS,
-  LOG_OUT_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS,
-  SIGN_UP_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS,
-  CHANGE_NICKNAME_REQUEST, CHANGE_NCIKNAME_SUCCESS, CHANGE_NCIKNAME_FAILURE,
-  FOLLOW_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS,
-  UNFOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS,
+  LOG_IN_FAILURE,
+  LOG_IN_REQUEST,
+  LOG_IN_SUCCESS,
+  LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
+  SIGN_UP_FAILURE,
+  SIGN_UP_REQUEST,
+  SIGN_UP_SUCCESS,
+  FOLLOW_FAILURE,
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  UNFOLLOW_FAILURE,
+  UNFOLLOW_REQUEST,
+  UNFOLLOW_SUCCESS,
 } from '../reducers/user';
 
 //로그인
@@ -19,7 +28,7 @@ function* logIn(action) {
   try {
     console.log('saga logIn');
     // const result = yield call(logInAPI);
-    // yield delay(100);
+    yield delay(1000);
     yield put({
       type: LOG_IN_SUCCESS,
       data: action.data,
@@ -74,6 +83,7 @@ function* signUp() {
     });
   }
 }
+
 
 //팔로우
 function followAPI() {
