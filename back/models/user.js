@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         charset : 'utf8',
         collate : 'utf8_general_ci',//한글 저장
     });
-    User.associate = (db) => {};
+    User.associate = (db) => {
+        db.User.hasMany(db.Post);//사람이 post를 여러개 가질 수 있음
+        db.User.hasMany(db.Comment);
+    };
     
     return User;
-}
+};

@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         charset : 'utf8',
         collate : 'utf8_general_ci',//이모티콘 저장
     });
-    Image.associate = (db) => {};
+    Image.associate = (db) => {
+        db.Imgae.belongsTo(db.Post);
+    };
     return Image;
-}
+};
