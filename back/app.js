@@ -1,5 +1,6 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const db = require('./models');
 
 const app = express();
@@ -8,6 +9,11 @@ db.sequelize.sync()
         console.log('db 연결 성공');
     })
     .catch(console.error);
+
+//미들웨어, 위에서 아래로, 왼쪽 오른쪽, 상위에 적어야 함
+app.use(express.json());
+app.use(express.urlencoded({ extended : true }));
+
 
 app.get('/', (req,res) => {
     res.send('hello express');
@@ -27,6 +33,7 @@ app.get('/posts', (req, res) => {
 
 //중복되는걸 빼줌
 app.use('/post',postRouter);
+app.use('/user',postRouter);
 
 
 app.listen(3065, () => {
