@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     User.associate = (db) => {
         db.User.hasMany(db.Post);//사람이 post를 여러개 가질 수 있음
         db.User.hasMany(db.Comment);
+        db.User.belongstoMany(db.Post, { through : 'Like'}, as : 'Liked');//내가 좋아요를 누른 게시글
+        //foreingkey로 구분 해줌(컬럼id를 구분해줌)
+        db.User.belongstoMany(db.User, { through : 'Follow', as : 'Followers', foreignkey : 'FollowingId'});
+        db.User.belongstoMany(db.User, { through : 'Follow', as : 'Followings', foreignkey : 'FollowerId'}); //나
     };
     
     return User;
