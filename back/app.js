@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const db = require('./models');
@@ -10,7 +11,11 @@ db.sequelize.sync()
     })
     .catch(console.error);
 
+
 //미들웨어, 위에서 아래로, 왼쪽 오른쪽, 상위에 적어야 함
+app.use(cors({
+    origin: '*',
+  }));
 app.use(express.json());
 app.use(express.urlencoded({ extended : true }));
 

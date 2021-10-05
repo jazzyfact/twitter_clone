@@ -64,7 +64,7 @@ function* logOut() {
 }
 
 //회원가입
-function signUpAPI() {
+function signUpAPI(data) {
   return axios.post('http://localhost:3065/user', data);//email, password, nickname
 }
 
