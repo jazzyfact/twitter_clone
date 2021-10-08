@@ -70,6 +70,7 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
+    console.log( email, password, nickname);
     return dispatch({
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname },

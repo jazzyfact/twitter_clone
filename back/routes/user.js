@@ -1,9 +1,35 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
+
 const { User } = require('../models');
 
 const router = express.Router();
 
+//로그인
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if(err) {
+            //서버에러
+            console.log(err);
+            return next(err);
+        }
+        if(info){
+            //클라이언트에러
+            return res.status(401).send(info.reason);
+        }
+        return req.login(user, async (loginErr) => {
+            if(loginErr){
+                console.log(loginErr);
+                return next(loginErr);
+            }
+            return res.json(user);
+        });
+    })(req, res, next);
+});
+
+
+//회원가입
 router.post('/', async (req, res ,next) =>{ //POST /user/
     try{
         //이메일 중복체크
@@ -17,7 +43,7 @@ router.post('/', async (req, res ,next) =>{ //POST /user/
         }
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
         await User.create({
-            email: req.body.email,
+            email: req.body.email, //front에서 준 데이터 넣기
             nickname: req.body.nickname,
             password: hashedPassword,
           });
