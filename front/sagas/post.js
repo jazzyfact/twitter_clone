@@ -1,5 +1,4 @@
 import axios from 'axios';
-import shortId from 'shortid';
 import { all, delay, fork, put, takeLatest, throttle, call } from 'redux-saga/effects';
 
 import {
@@ -20,13 +19,13 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 
 //맨 처음 게시글 로딩
-function loadPostsAPI(lastId) {
-  return axios.get(`/posts?lastId=${lastId || 0}`);
+function loadPostsAPI(data) {
+  return axios.get('/posts', data);
 }
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.lastId);
+    const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
@@ -103,12 +102,15 @@ function* addComment(action) {
       data: action.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
       data: err.response.data,
     });
   }
 }
+
+
 
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);

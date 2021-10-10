@@ -21,24 +21,6 @@ export const initialState = {
   addCommentError: null,
 };
 
-// export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-//   id: shortId.generate(),
-//   User: {
-//     id: shortId.generate(),
-//     nickname: faker.name.findName(),
-//   },
-//   content: faker.lorem.paragraph(),
-//   Images: [{
-//     src: faker.image.image(),
-//   }],
-//   Comments: [{
-//     User: {
-//       id: shortId.generate(),
-//       nickname: faker.name.findName(),
-//     },
-//     content: faker.lorem.sentence(),
-//   }],
-// }));
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -124,17 +106,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.addCommentLoading = false;
       draft.addCommentDone = true;
       break;
-      // const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
-      // const post = { ...state.mainPosts[postIndex] };
-      // post.Comments = [dummyComment(action.data.content), ...post.Comments];
-      // const mainPosts = [...state.mainPosts];
-      // mainPosts[postIndex] = post;
-      // return {
-      //   ...state,
-      //   mainPosts,
-      //   addCommentLoading: false,
-      //   addCommentDone: true,
-      // };
     }
     case ADD_COMMENT_FAILURE:
       draft.addCommentLoading = false;

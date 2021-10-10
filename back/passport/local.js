@@ -16,7 +16,7 @@ module.exports = () => {
             if(!user) {
                 done(null, false, {reason : '존재하지 않는 이메일 입니다.'}) //done(서버에러, 성공, 클라이언트 에러)
             }
-            const result = await bcrypt.compare(password, use.password);
+            const result = await bcrypt.compare(password, user.password);
             if( result){
                 return done(null, user); //성공, 사용자 정보 넘겨주기
             }
