@@ -21,8 +21,8 @@ passportConfig();
 
 //미들웨어, 위에서 아래로, 왼쪽 오른쪽, 상위에 적어야 함
 app.use(cors({
-    origin : '*',
-    credentials :false,
+    origin : 'http://localhost:3060',
+    credentials :true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended : true }));
