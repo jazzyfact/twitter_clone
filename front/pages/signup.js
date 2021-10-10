@@ -26,13 +26,11 @@ const Signup = () => {
     }
   }, [me && me.id]);
 
-
   useEffect(() => {
     if(signUpDone){
       Router.push('/');
     }
   }, [signUpDone]);
-
 
   useEffect(() => {
     if (signUpError) {
