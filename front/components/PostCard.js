@@ -10,7 +10,7 @@ import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -20,18 +20,30 @@ const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const { me } = useSelector((state) => state.user);
-  const id = me && me.id;
+  // const [liked, setLiked] = useState(false);
+  // const { me } = useSelector((state) => state.user);
+  // const id = me && me.id;
+
+  //좋아요
+  const onLike = useCallback(() => {
+    dispatch({
+      type : LIKE_POST_REQUEST,
+      data : post.id,
+    })
+  }, []);
+  //좋아요 취소
+  const onUnLike = useCallback(() => {
+    dispatch({
+      type : UNLIKE_POST_REQUEST,
+      data : post.id,
+    })
+  }, []);
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
   }, []);
 
-  const onToggleLike = useCallback(() => {
-    //이전 데이터 기반으로 다음 데이터를 만듦
-    setLiked((prev) => !prev);
-  }, []);
+ 
 
   const onRemovePost = useCallback(() => {
     dispatch({
@@ -40,6 +52,9 @@ const PostCard = ({ post }) => {
     });
   }, []);
 
+  //게시글, 좋아요 누른 사람중에 내가 있는지
+  const id = useSelector((state) => state.user.me?.id);
+  const liked = post.Likers.find((v) => v.id === id);
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -48,8 +63,8 @@ const PostCard = ({ post }) => {
                //배열에 jsx 넣을 시에는 key를 넣어줘야함
           <RetweetOutlined key="retweet" />,
           liked
-            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
-            : <HeartOutlined key="heart" onClick={onToggleLike} />,
+            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnLike} />
+            : <HeartOutlined key="heart" onClick={onLike} />,
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
             key="ellipsis"
@@ -112,8 +127,9 @@ PostCard.propTypes = {
     UserId: PropTypes.number,
     content: PropTypes.string,
     createdAt: PropTypes.string,
-    Comments: PropTypes.arrayOf(PropTypes.any),
-    Images: PropTypes.arrayOf(PropTypes.any),
+    Comments: PropTypes.arrayOf(PropTypes.object),
+    Images: PropTypes.arrayOf(PropTypes.object),
+    Likers : PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 };
 

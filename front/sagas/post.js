@@ -2,6 +2,9 @@ import axios from 'axios';
 import { all, delay, fork, put, takeLatest, throttle, call } from 'redux-saga/effects';
 
 import {
+  LIKE_POST_REQUEST,
+  LIKE_POST_SUCCESS,
+  LIKE_POST_FAILURE
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
@@ -17,6 +20,48 @@ import {
 } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
+
+//좋아요
+function likePostAPI(data) {
+  return axios.patch(`/post/${data}/like`);
+}
+
+function* likePost(action) {
+  try {
+    const result = yield call(likePostAPI, action.data);
+    yield put({
+      type: LIKE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LIKE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+//좋아요 취소
+function unlikePostAPI(data) {
+  return axios.delete(`/post/${data}/like`);
+}
+
+function* unlikePost(action) {
+  try {
+    const result = yield call(unlikePostAPI, action.data);
+    yield put({
+      type: UNLIKE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UNLIKE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 //맨 처음 게시글 로딩
 function loadPostsAPI(data) {
@@ -110,6 +155,13 @@ function* addComment(action) {
   }
 }
 
+function* watchLikePosts() {
+  yield throttle(LIKE_POST_REQUEST, likePost);
+}
+
+function* watchUnLikePosts() {
+  yield throttle(UNLIKE_POST_REQUEST, unLikePost);
+}
 
 
 function* watchLoadPosts() {
@@ -130,6 +182,8 @@ function* watchAddComment() {
 
 export default function* postSaga() {
   yield all([
+    fork(watchLikePost),
+    fork(watchUnlikePost),
     fork(watchAddPost),
     fork(watchLoadPosts),
     fork(watchRemovePost),
