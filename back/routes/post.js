@@ -70,7 +70,7 @@ router.post('/:postId/comment', isLoggedIn, async (req, res) => {  //POST, /post
 });
 
 //좋아요
-router.patch('/:postId/like',async (req, res, next) => { //PATCH /post/1/like
+router.patch('/:postId/like', isLoggedI, async (req, res, next) => { //PATCH /post/1/like
     try{
         //게시글이 있는지 검사
         await post = await Post.findOne({
@@ -91,13 +91,14 @@ router.patch('/:postId/like',async (req, res, next) => { //PATCH /post/1/like
 })
 
 //좋아요 취소
-router.delete('/:postId/like', async (req, res, next) => {//DELETE /post/1/like
+router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {//DELETE /post/1/like
     try{
         //게시글이 있는지 검사
         await post = await Post.findOne({
             where : {
                 id : req.params.postId
-            }
+                UserId : req.user.id,
+            },
         });
         if(!post){
             return res.status(403).send('게시글이 존재하지 않습니다.');
@@ -111,8 +112,17 @@ router.delete('/:postId/like', async (req, res, next) => {//DELETE /post/1/like
 })
 
 
-router.delete('/', (req, res) => { //DELETE /post
-    res.json({id});
+router.delete('/:postId', isLoggedIn, (req, res) => { //DELETE /post/10
+    try{
+        Post.destroy({
+            where : { id : req.params.postId },
+        });
+        res.json({ PostId : parseInt(req.params.postId, 10) });
+    }catch(error){
+        console.error(error);
+        next(error);
+    }
+    res.json({id : 1});
 });
 
 module.exports = router;
