@@ -149,7 +149,7 @@ router.patch('/nickname', isLoggedIn, async(req, res, next) => {
     await User.update({
       nickname : req.body.nickname, //front에서 받은 닉네임
     }, {
-      where : { id : req.user.id};
+      where : { id : req.user.id}
     });
     res.status(200).json({ PostId : req.params.postId});
   }catch(error){
