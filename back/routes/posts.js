@@ -24,10 +24,18 @@ router.get('/',async (req, res, next) => { //GET /posts 여러개
                 attributes : ['id', 'nickname'],
             }]
         }, {
-            model : User,
+            model : User, //좋아요 누른 사람
             as : 'Likers',
             attributes : ['id'],
-        }],
+        }, {
+            model : Post, //리트윗
+            as : 'Retweet',
+            include : [{
+              model : User,
+              attributes : ['id', 'nickname'],
+            }, {
+              model : Image,
+            }],
     });
     res.status(200).json(posts);
    }catch(error){
