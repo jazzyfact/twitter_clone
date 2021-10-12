@@ -28,6 +28,9 @@ export const initialState = {
   uploadImagesLoading: false, //이미지 업로드 추가 완료 됐을 때
   uploadImagesDone: false,
   uploadImagesError: null,
+  retweetLoading: false, //리트윗 추가 완료 됐을 때
+  retweetDone: false,
+  retweetError: null,
 };
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
@@ -58,6 +61,10 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const addPost = (data) => ({
@@ -74,6 +81,21 @@ export const addComment = (data) => ({
 // 이전 상태를 액션을 통해 다음 상태로 만들어내는 함수(불변성은 지키면서)
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case RETWEET_REQUEST:
+      draft.retweetLoading = true;
+      draft.retweetDone = false;
+      draft.retweetError = null;
+      break;
+    case RETWEET_SUCCESS: {
+      draft.retweetLoading = false;
+      draft.retweetDone = true;
+      draft.mainPosts.unshift(action.data);
+      break;
+    }
+    case RETWEET_FAILURE:
+      draft.retweetLoading = false;
+      draft.retweetError = action.error;
+      break;
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
       break;
@@ -127,8 +149,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOAD_POSTS_SUCCESS:
       draft.loadPostsLoading = false;
       draft.loadPostsDone = true;
-      draft.mainPosts = action.data.concat(draft.mainPosts);
-      draft.hasMorePosts = draft.mainPosts.length < 50;
+      draft.mainPosts =  draft.mainPosts.concat(action.data);
+      draft.hasMorePosts = action.data.length === 10; //데이터가 10 있다면 다른 데이터도 있을 것이라고 예상
       break;
     case LOAD_POSTS_FAILURE:
       draft.loadPostsLoading = false;

@@ -4,7 +4,7 @@ import { all, delay, fork, put, takeLatest, throttle, call } from 'redux-saga/ef
 import {
   LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS,
-  LIKE_POST_FAILURE
+  LIKE_POST_FAILURE,
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
@@ -113,7 +113,7 @@ function* unlikePost(action) {
 
 //맨 처음 게시글 로딩
 function loadPostsAPI(data) {
-  return axios.get('/posts', data);
+  return axios.get(`/posts?lastId=${lastId}` || 0);
 }
 
 function* loadPosts(action) {
