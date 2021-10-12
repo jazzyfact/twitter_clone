@@ -6,6 +6,7 @@ const fs = require('fs'); //파일시스템
 const { Post, Image, Comment, User, Hashtag} =require('../models');
 const { isLoggedIn } = require('./middlewares');
 
+
 const router = express.Router();
 
 try {
@@ -35,6 +36,15 @@ router.post('/',isLoggedIn, upload.none(), async (req, res) => {  //POST, /post
         content : req.body.content,
         UserId : req.user.id,
         });
+        //해시태그
+        if(hashtags) {
+          //없으면 등록, 있으면 가져오기
+         const result = await Promise.all(hashtags.map((tag) => Hashtag.create.findeOrCreate({ 
+           where : { name : tag.sclice(1).toLowerCase() },
+          }))); // [[#해쉬, true], [#해쉬태그, true]]
+          await post.addHashtagas(result.map((v) => v[0]));
+        }
+        //이미지
         if(req.body.image){
           if(Array.isArray(req.body.image)) { //이미지 여러 개 올리면 images: {hi.png, hello.png}
          const images = await Promise.all(req.body.image.map((image) => {
