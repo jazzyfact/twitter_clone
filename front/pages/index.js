@@ -28,17 +28,15 @@ const Home = () => {
     });
   }, []);
 
-//스크롤 끝까지 갔을 때
+//스크롤 끝까지 갔을 때 마지막 게시글 가져오기
   useEffect(() => {
-    //scrollY 얼마나 내렸는지
-    //clientHeight 화면에 보이는 길이
-    //scrollHeight 총 길이
     function onScroll() {
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length -1]?.id;
           dispatch({
             type: LOAD_POSTS_REQUEST,
-            data: mainPosts[mainPosts.length - 1].id,
+            lastId,
           });
         }
       }
