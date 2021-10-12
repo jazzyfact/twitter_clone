@@ -17,8 +17,33 @@ import {
   REMOVE_POST_FAILURE,
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
+  UPLOAD_IMAGES_REQUEST, 
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
 } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
+
+
+//이미지업로드
+function uploadImagesAPI(data) {
+  return axios.post('/post/images', data);
+}
+
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data);
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 
 //좋아요
@@ -86,7 +111,7 @@ function* loadPosts(action) {
 
 //게시글 추가
 function addPostAPI(data) {
-  return axios.post('/post', {content : data});
+  return axios.post('/post', data);
 }
 
 function* addPost(action) {
@@ -154,14 +179,18 @@ function* addComment(action) {
   }
 }
 
-function* watchLikePosts() {
-  yield throttle(LIKE_POST_REQUEST, likePost);
+
+function* watchUploadImages() {
+  yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
 }
 
-function* watchUnLikePosts() {
-  yield throttle(UNLIKE_POST_REQUEST, unLikePost);
+function* watchLikePost() {
+  yield takeLatest(LIKE_POST_REQUEST, likePost);
 }
 
+function* watchUnlikePost() {
+  yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
+}
 
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
@@ -181,6 +210,7 @@ function* watchAddComment() {
 
 export default function* postSaga() {
   yield all([
+    fork(watchUploadImages),
     fork(watchLikePost),
     fork(watchUnlikePost),
     fork(watchAddPost),
