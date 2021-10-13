@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV || 'development';//기본값
 const config = require('../config/config')[env];
 const db = {};
 
-const sequelize = new Sequelize(config.database, config.username, config.password, config);/ node와 mysql2 연결
+const sequelize = new Sequelize(config.database, config.username, config.password, config);//node와 mysql2 연결
 
 db.Comment = comment;
 db.Hashtag = hashtag;

@@ -7,9 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import { loginRequestAction } from '../reducers/user';
 
-
-
-// styled이 적용된, styled 태그를 불러옴
 const ButtonWrapper = styled.div`
   margin-top: 10px;
 `;
@@ -20,7 +17,7 @@ const FormWrapper = styled(Form)`
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { logInLoading,  logInError  } = useSelector((state) => state.user);
+  const { logInLoading, logInError } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
@@ -30,18 +27,16 @@ const LoginForm = () => {
     }
   }, [logInError]);
 
-
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
     dispatch(loginRequestAction({ email, password }));
   }, [email, password]);
-  
 
-   return (
+  return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor="user-email">이메일</label>
-        <br />    {/* 컴포넌트에 props로 넘겨주는 것은 useCallback 써야함 */}
+        <br />
         <Input name="user-email" type="email" value={email} onChange={onChangeEmail} required />
       </div>
       <div>

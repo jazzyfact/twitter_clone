@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Slick from 'react-slick';
-import { Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator, Global } from './styles';
+
+import { Overlay, Global, Header, CloseBtn, ImgWrapper, Indicator, SlickWrapper } from './styles';
 
 const ImagesZoom = ({ images, onClose }) => {
-  const [currentSlide, setCurrentSlide] = useState(0); //현재 페이지를 state에 저장
-
+  const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <Overlay>
       <Global />
       <Header>
         <h1>상세 이미지</h1>
-        <CloseBtn onClick={onClose} />
+        <CloseBtn onClick={onClose}>X</CloseBtn>
       </Header>
       <SlickWrapper>
         <div>
           <Slick
             initialSlide={0}//이미지를 0번째 부터 시작
-            beforeChange={(slide, newSlide) => setCurrentSlide(newSlide)} //현재슬라이드
+            beforeChange={(slide, newSlide) => setCurrentSlide(newSlide)}
             infinite
             arrows={false}
             slidesToShow={1}//한번에 1개만 보이고, 1개만 넘긴다
@@ -30,7 +30,7 @@ const ImagesZoom = ({ images, onClose }) => {
             ))}
           </Slick>
           <Indicator>
-            {/* 현재 몇번째 슬라이더를 보고 있는지 */}
+              {/* 현재 몇번째 슬라이더를 보고 있는지 */}
             <div>
               {currentSlide + 1}
               {' '}
@@ -45,9 +45,7 @@ const ImagesZoom = ({ images, onClose }) => {
 };
 
 ImagesZoom.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.shape({
-    src: PropTypes.string,
-  })).isRequired,
+  images: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

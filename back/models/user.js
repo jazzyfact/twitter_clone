@@ -30,8 +30,7 @@ module.exports = class User extends Model {
     db.User.hasMany(db.Post);//사람이 post를 여러개 가질 수 있음
     db.User.hasMany(db.Comment);
     db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' })//내가 좋아요를 누른 게시글
-    //foreingkey로 구분 해줌(컬럼id를 구분해줌)
-    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
-    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });//나
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });  //foreingkey로 구분 해줌(컬럼id를 구분해줌)
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });
   }
 };

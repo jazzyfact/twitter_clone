@@ -8,9 +8,7 @@ import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
 import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
 
-
 const Profile = () => {
-
   const dispatch = useDispatch();
 
   const { me } = useSelector((state) => state.user);
@@ -24,30 +22,26 @@ const Profile = () => {
     });
   }, []);
 
-
   useEffect(() => {
     if (!(me && me.id)) {
       Router.push('/');
     }
   }, [me && me.id]);
+
   if (!me) {
     return null;
   }
   return (
-    <AppLayout>
+    <>
       <Head>
         <title>내 프로필 | NodeBird</title>
       </Head>
-      <NicknameEditForm />
-      <FollowList
-        header="팔로잉 목록"
-        data={me.Followings}
-      />
-      <FollowList
-        header="팔로워 목록"
-        data={me.Followers}
-      />
-    </AppLayout>
+      <AppLayout>
+        <NicknameEditForm />
+        <FollowList header="팔로잉" data={me.Followings} />
+        <FollowList header="팔로워" data={me.Followers} />
+      </AppLayout>
+    </>
   );
 };
 

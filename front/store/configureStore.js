@@ -15,12 +15,12 @@ const configureStore = (context) => {
     : composeWithDevTools(
       applyMiddleware(...middlewares),
     );
-     //state와 reducer를 포함하는것
+      //state와 reducer를 포함하는것
   const store = createStore(reducer, enhancer);
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
 };
 
-const wrapper = createWrapper(configureStore, { debug: process.env.NODE_ENV === 'development' }); //true이면 리덕스에 대해 자세히 나옴
+const wrapper = createWrapper(configureStore, { debug: process.env.NODE_ENV === 'development' });
 
 export default wrapper;

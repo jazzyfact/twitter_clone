@@ -18,9 +18,7 @@ const NicknameEditForm = () => {
   }, [nickname]);
 
   return (
-    <Form
-      style={{ marginBottom: '20px', border: '1px solid #d9d9d9', padding: '20px' }}
-    >
+    <Form style={{ marginBottom: '20px', border: '1px solid #d9d9d9', padding: '20px' }}>
       <Input.Search
         value={nickname}
         onChange={onChangeNickname}

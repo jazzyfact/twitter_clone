@@ -25,12 +25,12 @@ passportConfig();
 app.use(morgan('dev'));
 //미들웨어, 위에서 아래로, 왼쪽 오른쪽, 상위에 적어야 함
 app.use(cors({
-    origin : 'http://localhost:3060',
-    credentials :true,
+  origin: 'http://localhost:3060',
+  credentials: true,
 }));
-app.use('/',express.static(path.join(__dirname, 'uploads')));//운영체제에 맞춰서
+app.use('/', express.static(path.join(__dirname, 'uploads')));//운영체제에 맞춰서
 app.use(express.json());
-app.use(express.urlencoded({ extended : true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
   saveUninitialized: false,
@@ -40,7 +40,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.get('/', (req, res) => {
   res.send('hello express');
 });
@@ -48,7 +47,6 @@ app.get('/', (req, res) => {
 app.use('/posts', postsRouter);
 app.use('/post', postRouter);
 app.use('/user', userRouter);
-
 
 app.listen(3065, () => {
   console.log('서버 실행 중!');

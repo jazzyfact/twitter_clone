@@ -22,13 +22,13 @@ export const initialState = {
   changeNicknameLoading: false, // 닉네임 변경 시도중
   changeNicknameDone: false,
   changeNicknameError: null,
-  loadFollowingsLoading: false,// 팔로잉 
+  loadFollowingsLoading: false,// 팔로잉 목록
   loadFollowingsDone: false,
   loadFollowingsError: null,
-  loadFollowersLoading: false, //팔로워
+  loadFollowersLoading: false,//팔로워 목록
   loadFollowersDone: false,
   loadFollowersError: null,
-  removeFollowerLoading: false, //팔로워 제거
+  removeFollowerLoading: false,//팔로워 제거
   removeFollowerDone: false,
   removeFollowerError: null,
   me: null,
@@ -77,8 +77,7 @@ export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
 export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
-export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';//내게시글 제거하는 액
-
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';//내게시글 제거
 
 //user와 관련된 액션
 export const loginRequestAction = (data) => ({
@@ -89,8 +88,6 @@ export const loginRequestAction = (data) => ({
 export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
 });
-
-
 
 //이전 state와 action을 받아서 다음 state를 돌려주는 함수
 const reducer = (state = initialState, action) => produce(state, (draft) => {
@@ -237,23 +234,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_POST_TO_ME:
       draft.me.Posts.unshift({ id: action.data });
       break;
-      // return {
-      //   ...state,
-      //   me: {
-      //     ...state.me,
-      //     Posts: [{ id: action.data }, ...state.me.Posts],
-      //   },
-      // };
     case REMOVE_POST_OF_ME:
       draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data);
       break;
-      // return {
-      //   ...state,
-      //   me: {
-      //     ...state.me,
-      //     Posts: state.me.Posts.filter((v) => v.id !== action.data),
-      //   },
-      // };
     default:
       break;
   }

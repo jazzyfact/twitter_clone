@@ -1,34 +1,31 @@
-import shortId from 'shortid';
-import faker from 'faker';
-
 import produce from '../util/produce';
 
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
-  hasMorePosts: true, //데이터 가져오기
+  hasMorePosts: true,//데이터 가져오기
   likePostLoading: false, //좋아요 추가가 완료 됐을 때
   likePostDone: false,
   likePostError: null,
-  unlikePostLoading: false, //좋아요 취소가 완료 됐을 때
+  unlikePostLoading: false,//좋아요 취소가 완료 됐을 때
   unlikePostDone: false,
   unlikePostError: null,
-  loadPostsLoading: false, //게시물 추가가 완료 됐을 때
+  loadPostsLoading: false,//게시물 추가가 완료 됐을 때
   loadPostsDone: false,
   loadPostsError: null,
   addPostLoading: false,//게시물 추가가 완료 됐을 때
   addPostDone: false,
   addPostError: null,
-  removePostLoading: false,//게시물 추가가 완료 됐을 때
+  removePostLoading: false,//게시물 삭제가 완료 됐을 때
   removePostDone: false,
   removePostError: null,
   addCommentLoading: false,//댓글 추가가 완료 됐을 때
   addCommentDone: false,
   addCommentError: null,
-  uploadImagesLoading: false, //이미지 업로드 추가 완료 됐을 때
+  uploadImagesLoading: false,//이미지 업로드 추가 완료 됐을 때
   uploadImagesDone: false,
   uploadImagesError: null,
-  retweetLoading: false, //리트윗 추가 완료 됐을 때
+  retweetLoading: false,//리트윗 추가 완료 됐을 때
   retweetDone: false,
   retweetError: null,
 };
@@ -77,7 +74,6 @@ export const addComment = (data) => ({
   data,
 });
 
-
 // 이전 상태를 액션을 통해 다음 상태로 만들어내는 함수(불변성은 지키면서)
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -119,7 +115,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.likePostDone = false;
       draft.likePostError = null;
       break;
-    case LIKE_POST_SUCCESS:{
+    case LIKE_POST_SUCCESS: {
       const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
       post.Likers.push({ id: action.data.UserId });
       draft.likePostLoading = false;
@@ -131,26 +127,31 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.likePostError = action.error;
       break;
     case UNLIKE_POST_REQUEST:
-        draft.unlikePostLoading = true;
-        draft.unlikePostDone = false;
-        draft.unlikePostError = null;
-        break;
-    case UNLIKE_POST_SUCCESS:{
-        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-        post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
-        draft.likePostLoading = false;
-        draft.likePostDone = true;
-        break;
-      }
+      draft.unlikePostLoading = true;
+      draft.unlikePostDone = false;
+      draft.unlikePostError = null;
+      break;
+    case UNLIKE_POST_SUCCESS: {
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+      post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
+      draft.unlikePostLoading = false;
+      draft.unlikePostDone = true;
+      break;
+    }
     case UNLIKE_POST_FAILURE:
       draft.unlikePostLoading = false;
       draft.unlikePostError = action.error;
       break;
+    case LOAD_POSTS_REQUEST:
+      draft.loadPostsLoading = true;
+      draft.loadPostsDone = false;
+      draft.loadPostsError = null;
+      break;
     case LOAD_POSTS_SUCCESS:
       draft.loadPostsLoading = false;
       draft.loadPostsDone = true;
-      draft.mainPosts =  draft.mainPosts.concat(action.data);
-      draft.hasMorePosts = action.data.length === 10; //데이터가 10 있다면 다른 데이터도 있을 것이라고 예상
+      draft.mainPosts = draft.mainPosts.concat(action.data);
+      draft.hasMorePosts = action.data.length === 10;//데이터가 10 있다면 다른 데이터도 있을 것이라고 예상
       break;
     case LOAD_POSTS_FAILURE:
       draft.loadPostsLoading = false;
@@ -164,7 +165,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_POST_SUCCESS:
       draft.addPostLoading = false;
       draft.addPostDone = true;
-      draft.mainPosts.unshift((action.data));
+      draft.mainPosts.unshift(action.data);
       draft.imagePaths = [];
       break;
     case ADD_POST_FAILURE:
@@ -192,7 +193,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case ADD_COMMENT_SUCCESS: {
       const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-      post.Comments.unshift((action.data));
+      post.Comments.unshift(action.data);
       draft.addCommentLoading = false;
       draft.addCommentDone = true;
       break;

@@ -1,28 +1,31 @@
 import axios from 'axios';
-import { all, delay, fork, put, takeLatest, throttle, call } from 'redux-saga/effects';
+import { all, fork, put, takeLatest, throttle, call } from 'redux-saga/effects';
 
 import {
-  LIKE_POST_REQUEST,
-  LIKE_POST_SUCCESS,
-  LIKE_POST_FAILURE,
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
-  ADD_POST_SUCCESS,
+  ADD_POST_SUCCESS, 
+  LIKE_POST_FAILURE,
+  LIKE_POST_REQUEST, 
+  LIKE_POST_SUCCESS,
   LOAD_POSTS_FAILURE,
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_REQUEST,
-  REMOVE_POST_SUCCESS,
+  REMOVE_POST_SUCCESS, 
+  RETWEET_FAILURE, 
+  RETWEET_REQUEST, 
+  RETWEET_SUCCESS, 
+  UNLIKE_POST_FAILURE,
+  UNLIKE_POST_REQUEST, 
+  UNLIKE_POST_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
   UPLOAD_IMAGES_REQUEST, 
   UPLOAD_IMAGES_SUCCESS,
-  UPLOAD_IMAGES_FAILURE,
-  RETWEET_REQUEST,
-  RETWEET_SUCCESS,
-  RETWEET_FAILURE,  
 } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -47,7 +50,7 @@ function* retweet(action) {
   }
 }
 
-//이미지업로드
+//이미지 업로드
 function uploadImagesAPI(data) {
   return axios.post('/post/images', data);
 }
@@ -67,7 +70,6 @@ function* uploadImages(action) {
     });
   }
 }
-
 
 //좋아요
 function likePostAPI(data) {
@@ -112,13 +114,13 @@ function* unlikePost(action) {
 }
 
 //맨 처음 게시글 로딩
-function loadPostsAPI(data) {
-  return axios.get(`/posts?lastId=${lastId}` || 0);
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`);
 }
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.data);
+    const result = yield call(loadPostsAPI, action.lastId);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
@@ -157,6 +159,7 @@ function* addPost(action) {
   }
 }
 
+//게시글 삭제
 function removePostAPI(data) {
   return axios.delete(`/post/${data}`);
 }
@@ -166,7 +169,7 @@ function* removePost(action) {
     const result = yield call(removePostAPI, action.data);
     yield put({
       type: REMOVE_POST_SUCCESS,
-      data: action.data,//id가 들어가있음(어떤게시글인지)
+      data: result.data,
     });
     yield put({
       type: REMOVE_POST_OF_ME,
@@ -183,7 +186,7 @@ function* removePost(action) {
 
 //댓글 추가
 function addCommentAPI(data) {
-  return axios.post(`/post/${data.postId}/comment`, data); //POST /post/1/comment
+  return axios.post(`/post/${data.postId}/comment`, data); // POST /post/1/comment
 }
 
 function* addComment(action) {
@@ -191,7 +194,7 @@ function* addComment(action) {
     const result = yield call(addCommentAPI, action.data);
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
@@ -201,7 +204,6 @@ function* addComment(action) {
     });
   }
 }
-
 
 function* watchRetweet() {
   yield takeLatest(RETWEET_REQUEST, retweet);
