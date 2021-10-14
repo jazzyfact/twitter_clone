@@ -7,7 +7,7 @@ import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
 
 
@@ -53,15 +53,16 @@ const Home = () => {
   );
 };
 
-//화면 그리기 전에 먼저 실행
+
+//프론트 서버에서 실행
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-  const cookie = req ? req.headers.cookie : '';
-  axios.defaults.headers.Cookie = '';
-  if (req && cookie) {
+  const cookie = req ? req.headers.cookie : '';//쿠키정보
+  axios.defaults.headers.Cookie = ''; //쿠키비우기
+  if (req && cookie) { //쿠키전달
     axios.defaults.headers.Cookie = cookie;
   }
   store.dispatch({
-    type: LOAD_USER_REQUEST,
+    type: LOAD_MY_INFO_REQUEST,
   });
   store.dispatch({
     type: LOAD_POSTS_REQUEST,
