@@ -56,6 +56,7 @@ const Home = () => {
 
 //프론트 서버에서 실행
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+  console.log('getServerSideProps start');
   const cookie = req ? req.headers.cookie : '';//쿠키정보
   axios.defaults.headers.Cookie = ''; //쿠키비우기
   if (req && cookie) { //쿠키전달
