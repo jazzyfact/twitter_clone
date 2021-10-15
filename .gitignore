@@ -2,3 +2,6 @@ node_modules
 .next
 config.js
 .env
+
+uploads
+public
