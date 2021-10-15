@@ -5,6 +5,8 @@ import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import {
   RetweetOutlined, HeartOutlined, MessageOutlined, EllipsisOutlined, HeartTwoTone,
 } from '@ant-design/icons';
+import Link from 'next/link';
+import moment from 'moment';
 
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
@@ -12,14 +14,14 @@ import PostCardContent from './PostCardContent';
 import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
 import FollowButton from './FollowButton';
 
+moment.locale('ko');
+
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-   //게시글, 좋아요 누른 사람중에 내가 있는지
   const id = useSelector((state) => state.user.me?.id);
 
-  //좋아요
   const onLike = useCallback(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');
@@ -29,8 +31,6 @@ const PostCard = ({ post }) => {
       data: post.id,
     });
   }, [id]);
-
-  //좋아요취소
   const onUnlike = useCallback(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');
@@ -44,7 +44,6 @@ const PostCard = ({ post }) => {
     setCommentFormOpened((prev) => !prev);
   }, []);
 
-  //게시글 삭제
   const onRemovePost = useCallback(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');
@@ -54,8 +53,6 @@ const PostCard = ({ post }) => {
       data: post.id,
     });
   }, [id]);
-
-  //리트윗
 
   const onRetweet = useCallback(() => {
     if (!id) {
@@ -104,24 +101,28 @@ const PostCard = ({ post }) => {
             <Card
               cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
             >
+              {/* moment */}
+              <span style={{ float: 'right' }}>{moment(post.createdAt).startOf('hour').fromNow()}</span> 
               <Card.Meta
-                avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+                avatar={<Link href={`/user/${post.Retweet.User.id}`}><a><Avatar>{post.Retweet.User.nickname[0]}</Avatar></a></Link>}
                 title={post.Retweet.User.nickname}
                 description={<PostCardContent postData={post.Retweet.content} />}
               />
             </Card>
           )
           : (
-            <Card.Meta
-              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-              title={post.User.nickname}
-              description={<PostCardContent postData={post.content} />}
-            />
+            <>
+              <span style={{ float: 'right' }}>{moment(post.createdAt).startOf('hour').fromNow()}</span>
+              <Card.Meta
+                avatar={<Link href={`/user/${post.User.id}`}><a><Avatar>{post.User.nickname[0]}</Avatar></a></Link>}
+                title={post.User.nickname}
+                description={<PostCardContent postData={post.content} />}
+              />
+            </>
           )}
       </Card>
       {commentFormOpened && (
         <div>
-            {/* 어떤 게시글에 댓글을 달 건지 알아야해서 post 보냄, 게시글의 id */}
           <CommentForm post={post} />
           <List
             header={`${post.Comments.length}개의 댓글`}
@@ -130,8 +131,8 @@ const PostCard = ({ post }) => {
             renderItem={(item) => (
               <li>
                 <Comment
-                  author={item.User.nickname}//댓글 작성한 유저
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  author={item.User.nickname}
+                  avatar={<Link href={`/user/${item.User.id}`}><a><Avatar>{item.User.nickname[0]}</Avatar></a></Link>}
                   content={item.content}
                 />
               </li>
