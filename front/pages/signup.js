@@ -119,19 +119,20 @@ const Signup = () => {
 
 
 //로그인한 사용자에 따라서 다른 것을 보여줌
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
   console.log('getServerSideProps start');
-  const cookie = req ? req.headers.cookie : '';//쿠키정보
-  axios.defaults.headers.Cookie = ''; //쿠키비우기
-  if (req && cookie) { //쿠키전달
+  console.log(context.req.headers);
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
-  store.dispatch({
+  context.store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
   });
-  store.dispatch(END);
-  await store.sagaTask.toPromise();
+  context.store.dispatch(END);
+  console.log('getServerSideProps end');
+  await context.store.sagaTask.toPromise();
 });
-
 
 export default Signup;
