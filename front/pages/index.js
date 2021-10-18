@@ -47,12 +47,14 @@ const Home = () => {
   );
 };
 
+
+
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
   console.log('getServerSideProps start');
   console.log(context.req.headers);
-  const cookie = context.req ? context.req.headers.cookie : ''; //쿠키정보
-  axios.defaults.headers.Cookie = '';//쿠키비우기
-  if (context.req && cookie) {//쿠키전달
+  const cookie = context.req ? context.req.headers.cookie : ''; // 쿠키정보
+  axios.defaults.headers.Cookie = '';// 쿠키비우기
+  if (context.req && cookie) { // 쿠키전달
     axios.defaults.headers.Cookie = cookie;
   }
   context.store.dispatch({

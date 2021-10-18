@@ -12,14 +12,12 @@ import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
 import AppLayout from '../../components/AppLayout';
 
-//특정 사용자 아이디를 받고
-//그 사용자에 대한 게시글을 가져옴
 const User = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
   const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
-  const { userInfo } = useSelector((state) => state.user);
+  const { userInfo, me } = useSelector((state) => state.user);
 
   useEffect(() => {
     const onScroll = () => {
@@ -50,13 +48,14 @@ const User = () => {
           <meta name="description" content={`${userInfo.nickname}님의 게시글`} />
           <meta property="og:title" content={`${userInfo.nickname}님의 게시글`} />
           <meta property="og:description" content={`${userInfo.nickname}님의 게시글`} />
-          <meta property="og:image" content="https://nodebird.com/message.png" />
+          <meta property="og:image" content="https://nodebird.com/favicon.ico" />
           <meta property="og:url" content={`https://nodebird.com/user/${id}`} />
         </Head>
       )}
-      {userInfo
+      {userInfo && (userInfo.id !== me?.id)
         ? (
           <Card
+            style={{ marginBottom: 20 }}
             actions={[
               <div key="twit">
                 짹짹
@@ -82,30 +81,32 @@ const User = () => {
           </Card>
         )
         : null}
-      {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
+      {mainPosts.map((c) => (
+        <PostCard key={c.id} post={c} />
+      ))}
     </AppLayout>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
-    const cookie = req ? req.headers.cookie : '';
-    axios.defaults.headers.Cookie = '';
-    if (req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-    }
-    store.dispatch({
-      type: LOAD_USER_POSTS_REQUEST,
-      data: params.id,
-    });
-    store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    store.dispatch({
-      type: LOAD_USER_REQUEST,
-      data: params.id,
-    });
-    store.dispatch(END);
-    await store.sagaTask.toPromise();
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  context.store.dispatch({
+    type: LOAD_USER_POSTS_REQUEST,
+    data: context.params.id,
   });
+  context.store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  context.store.dispatch({
+    type: LOAD_USER_REQUEST,
+    data: context.params.id,
+  });
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 
 export default User;

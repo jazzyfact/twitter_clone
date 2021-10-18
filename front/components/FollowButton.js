@@ -22,7 +22,6 @@ const FollowButton = ({ post }) => {
     }
   }, [isFollowing]);
 
-   //작성자 = 내가쓴글일 때 팔로우 버튼 숨김
   if (post.User.id === me.id) {
     return null;
   }

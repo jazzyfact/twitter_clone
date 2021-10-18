@@ -7,7 +7,10 @@ import {
   ADD_COMMENT_SUCCESS,
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
-  ADD_POST_SUCCESS, 
+  ADD_POST_SUCCESS,
+  UPDATE_POST_FAILURE, 
+  UPDATE_POST_REQUEST, 
+  UPDATE_POST_SUCCESS,
   LIKE_POST_FAILURE,
   LIKE_POST_REQUEST, 
   LIKE_POST_SUCCESS,
@@ -235,6 +238,28 @@ function* addPost(action) {
   }
 }
 
+//게시글 수정
+function updatePostAPI(data) {
+  return axios.patch(`/post/${data.PostId}`, data);
+}
+
+function* updatePost(action) {
+  try {
+    const result = yield call(updatePostAPI, action.data);
+    yield put({
+      type: UPDATE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPDATE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+
 //게시글 삭제
 function removePostAPI(data) {
   return axios.delete(`/post/${data}`);
@@ -316,6 +341,9 @@ function* watchLoadPosts() {
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
 }
+function* watchUpdatePost() {
+  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+}
 
 function* watchRemovePost() {
   yield takeLatest(REMOVE_POST_REQUEST, removePost);
@@ -332,6 +360,7 @@ export default function* postSaga() {
     fork(watchLikePost),
     fork(watchUnlikePost),
     fork(watchAddPost),
+    fork(watchUpdatePost),
     fork(watchLoadPost),
     fork(watchLoadUserPosts),
     fork(watchLoadHashtagPosts),

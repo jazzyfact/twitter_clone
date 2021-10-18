@@ -62,12 +62,12 @@ const PostForm = () => {
         value={text}
         onChange={onChangeText}
         maxLength={140}
-        placeholder="어떤 신기한 일이 있었나요?"
+        placeholder="오늘의 일기를 써주세요"
       />
       <div>
         <input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <Button type="primary" style={{ float: 'right' }} htmlType="submit">짹짹</Button>
+        <Button type="primary" style={{ float: 'right' }} htmlType="submit">등록</Button>
       </div>
       <div>
         {imagePaths.map((v, i) => (

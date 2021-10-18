@@ -2,6 +2,8 @@ import { Form, Input, Button } from 'antd';
 import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import useInput from '../hooks/useInput';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
@@ -19,7 +21,10 @@ const CommentForm = ({ post }) => {
   }, [addCommentDone]);
 
   const onSubmitComment = useCallback(() => {
-    dispatch({
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
       type: ADD_COMMENT_REQUEST,
       data: { content: commentText, postId: post.id, userId: id },
     });
@@ -34,7 +39,7 @@ const CommentForm = ({ post }) => {
           type="primary"
           htmlType="submit"
           loading={addCommentLoading}
-        >삐약
+        >댓글 작성
         </Button>
       </Form.Item>
     </Form>
