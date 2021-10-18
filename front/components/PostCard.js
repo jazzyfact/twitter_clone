@@ -131,6 +131,7 @@ const PostCard = ({ post }) => {
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
+                 <span style={{ float: 'right' }}>{moment(post.Comments.createdAt).fromNow()}</span> 
                 <Comment
                   author={item.User.nickname}
                   avatar={<Link href={`/user/${item.User.id}`}><a><Avatar>{item.User.nickname[0]}</Avatar></a></Link>}
