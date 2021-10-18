@@ -32,9 +32,15 @@
       "linebreak-style": "off",
       "no-param-reassign": "off"
     },
-    "max-line-length": [
-        true,
-        140
-      ],
+    "rules": {
+      "linebreak-style": 0,
+      "max-len": ["error", 80, 2, {
+        "ignoreUrls": true,
+        "ignoreComments": false,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": false,
+        "ignoreTemplateLiterals": false
+      }]
+    }
   }
   
