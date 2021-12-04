@@ -17,10 +17,11 @@
 <br/><br/>
 
 ## 사용기술
-react
-redux-saga
-next
-express
-sequelize
-mysql
-passport
+- react
+- redux-saga
+- styled-components, Ant-Design
+- next
+- express
+- sequelize
+- mysql
+- passport
